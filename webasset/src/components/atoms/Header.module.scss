@@ -1,0 +1,61 @@
+@import "src/css/mixin.scss";
+.link_button {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.header {
+  // background-color: #c4b9af;
+  padding: 16px 0;
+  margin-bottom: 50px;
+  font-family: "noto sans";
+  font-size: 15px;
+}
+
+.header_contents {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  // border-bottom: 1px solid #c4b9af;
+  width: 900px;
+  margin: 0 auto;
+}
+
+.title {
+  font-family: "Dela Gothic One", sans-serif;
+  font-size: 30px;
+  margin: 0;
+}
+
+.sub_title {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  position: relative;
+  right: -60px;
+  top: -10px;
+  letter-spacing: 1.8px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.menu_wrapper {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  gap: 20px;
+
+  > a {
+    color: #333333;
+    font-weight: bold;
+    padding: 14px;
+  }
+
+  .create_accout_button {
+    background-color: #a42b2b;
+    color: white;
+    border-radius: 10px;
+    @include box-shadow;
+  }
+}

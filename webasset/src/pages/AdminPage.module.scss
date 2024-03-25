@@ -1,0 +1,62 @@
+@import "src/css/mixin.scss";
+
+.wrapper {
+  padding: 50px 0 0 0;
+  width: 70%;
+  margin: 0 auto;
+  text-align: left;
+
+  ul,
+  li {
+    list-style: none;
+  }
+}
+
+.form_wrapper {
+  text-align: left;
+  // height: 50px;
+  width: 100%;
+  // display: flex;
+  margin-bottom: 10px;
+}
+
+.form_input {
+  padding: 15px;
+  border: none;
+  outline: none;
+  height: 100%;
+  width: 85%;
+  @include box-shadow;
+}
+
+.form_input_select {
+  width: 85%;
+  @include box-shadow;
+  border: none;
+}
+
+.form_label {
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  // background-color: rgb(55, 55, 55);
+  // color: white;
+}
+
+.form_submit {
+  box-shadow: 0px;
+  padding: 10px;
+  width: 200px;
+  color: white;
+  margin: 0 auto;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: rgb(55, 55, 55);
+}
+
+.form_submit_wrapper {
+  text-align: center;
+}

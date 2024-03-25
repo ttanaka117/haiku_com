@@ -1,0 +1,75 @@
+@import "src/css/mixin.scss";
+
+.wrapper {
+  margin: 0 auto;
+  text-align: left;
+
+  ul,
+  li {
+    list-style: none;
+  }
+}
+
+.form_wrapper {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form_input {
+  padding: 15px;
+  border: none;
+  outline: none;
+  height: 100%;
+  width: 85%;
+  @include box-shadow;
+  margin-bottom: 15px;
+}
+
+.form_input_select {
+  font-family: "noto sans jp";
+  width: 85%;
+  @include box-shadow;
+  border: none;
+  border-color: #fff;
+  margin-bottom: 20px;
+}
+
+.form_label {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.form_submit {
+  box-shadow: 0px;
+  padding: 10px;
+  width: 200px;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: rgb(55, 55, 55);
+}
+
+.form_cancel {
+  box-shadow: 0px;
+  padding: 10px;
+  width: 200px;
+  background-color: #656565;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.form_submit_wrapper {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}

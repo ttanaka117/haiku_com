@@ -1,0 +1,26 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "letter_body": {
+        "type": "text",
+        "analyzer": "kuromoji"
+      },
+      "letter_body_type": {
+        "type": "keyword"
+      },
+      "penname": {
+        "type": "keyword"
+      },
+      "address": {
+        "type": "keyword"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "kuromoji"
+      }
+    }
+  }
+}

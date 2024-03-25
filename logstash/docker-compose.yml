@@ -1,0 +1,14 @@
+services:
+  logstash:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    ports:
+      - 5044:5044
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    external: true

@@ -1,0 +1,150 @@
+@import "src/css/mixin.scss";
+.search_form {
+  margin: 40px 0;
+}
+
+.search_form_wrapper {
+  text-align: left;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0 auto 40px;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.search_form_input {
+  font-family: "noto sans jp";
+  font-size: 14px;
+  padding: 20px;
+  border: none;
+  height: 100%;
+  border-radius: 5px;
+  width: 65%;
+  @include box-shadow;
+}
+
+.search_form_input_name {
+  padding: 20px;
+  border: none;
+  height: 100%;
+  border-radius: 5px;
+  width: 20%;
+  @include box-shadow;
+  margin: 0 10px;
+}
+
+.form_input_select {
+  width: 20%;
+  font-family: "noto sans jp";
+  box-sizing: border-box;
+  @include box-shadow;
+  border: none;
+  border-color: #fff;
+  border-radius: 5px;
+}
+
+.search_form_label {
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 15%;
+  border-radius: 5px;
+  font-size: 14px;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  background-color: rgb(55, 55, 55);
+  color: white;
+}
+
+.title {
+  margin-bottom: 10px;
+  font-family: "noto sans";
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  /* font-style: italic; */
+  color: #20201f;
+}
+
+.address {
+  margin-bottom: 10px;
+}
+
+.img {
+  width: 100%;
+}
+
+.check_list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+
+  > span {
+    margin-right: 10px;
+  }
+}
+
+.f-16 {
+  font-size: 16px;
+}
+
+.icon_review {
+  font-size: 22px;
+  color: rgb(163, 163, 163) !important;
+}
+
+.icon_overlay {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  > i {
+    color: rgb(230, 187, 0) !important;
+  }
+}
+
+.icon_wrapper {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.icon_fire {
+  font-size: 26px;
+  color: rgb(255, 25, 0) !important;
+  position: relative;
+  top: 7px;
+}
+
+.icon_water {
+  font-size: 26px;
+  color: rgb(0, 170, 255) !important;
+  position: relative;
+  top: 7px;
+}
+
+.review_wrapper {
+  display: flex;
+  align-items: center;
+
+  > .rate_num {
+    position: relative;
+    top: -2px;
+    margin-left: 4px;
+    color: rgb(230, 187, 0) !important;
+    font-weight: bold;
+  }
+
+  > .review_num {
+    font-size: 14px;
+    color: rgb(99, 99, 99);
+    position: relative;
+    top: -1px;
+    margin-left: 10px;
+  }
+}

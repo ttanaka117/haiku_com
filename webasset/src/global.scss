@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #151515;
+}
+
+input {
+  outline: none;
+}
+
+#layout-page {
+  position: relative;
+}
+
+.App {
+  min-height: 100vh;
+  text-align: center;
+  position: relative;
+}
+
+.App-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* font-size */
+
+p {
+  font-size: 14px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+/* react-modal */
+.ReactModal__Overlay {
+  opacity: 0;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}

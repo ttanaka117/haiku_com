@@ -1,0 +1,27 @@
+{
+  "index_patterns": ["haikus*"],
+  "template": {
+  "mappings": {
+      "properties": {
+      "id": {
+          "type": "long"
+      },
+      "text": {
+          "type": "text",
+          "analyzer": "kuromoji"
+      },
+      "text_kana": {
+          "type": "text",
+          "analyzer": "kuromoji"
+      },
+      "season": {
+          "type": "text",
+          "analyzer": "kuromoji"
+      },
+      "author": {
+          "type": "keyword"
+      }
+      }
+  }
+  }
+}

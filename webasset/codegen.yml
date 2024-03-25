@@ -1,0 +1,9 @@
+schema: ../server/src/graphql/schema.graphql # Graphql Schema
+documents: ../server/src/graphql/query.graphql # Query
+# documents: ./src/graphql/query.graphql # Query
+generates:
+  src/graphql/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

@@ -1,0 +1,130 @@
+@import "src/css/mixin.scss";
+.content_card {
+  text-align: left;
+  padding: 20px;
+  border-radius: 5px;
+  width: calc(50% - 20px);
+  background-color: #ffffff;
+  @include box-shadow;
+  color: #4d4d4d;
+}
+.like_button {
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    color: rgb(221, 24, 24);
+  }
+
+  > i {
+    font-size: 16px;
+  }
+}
+
+.heading {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.letterBody {
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  /* font-style: italic; */
+  color: #333333;
+}
+
+.letterBodyBottom {
+  display: flex;
+  justify-content: space-between;
+
+  i {
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+  }
+}
+.author {
+  text-align: right;
+}
+
+.address {
+  color: #4d4d4d;
+  margin-bottom: 10px;
+}
+
+.img {
+  width: 100%;
+}
+
+.check_list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+  margin-top: 0;
+
+  > span {
+    margin-right: 10px;
+  }
+}
+
+.f-16 {
+  font-size: 16px;
+}
+
+.icon_review {
+  font-size: 22px;
+  color: rgb(163, 163, 163) !important;
+}
+
+.icon_overlay {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  > i {
+    color: rgb(230, 187, 0) !important;
+  }
+}
+
+.icon_wrapper {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.icon_fire {
+  font-size: 26px;
+  color: rgb(255, 25, 0) !important;
+  position: relative;
+  top: 7px;
+}
+
+.icon_water {
+  font-size: 26px;
+  color: rgb(0, 170, 255) !important;
+  position: relative;
+  top: 7px;
+}
+
+.review_wrapper {
+  display: flex;
+  align-items: center;
+
+  > .rate_num {
+    position: relative;
+    top: -2px;
+    margin-left: 4px;
+    color: rgb(230, 187, 0) !important;
+    font-weight: bold;
+  }
+
+  > .review_num {
+    font-size: 14px;
+    color: rgb(99, 99, 99);
+    position: relative;
+    top: -1px;
+    margin-left: 10px;
+  }
+}
