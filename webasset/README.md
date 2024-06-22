@@ -10,8 +10,6 @@ npm install
 npm run start
 ```
 
-![image](https://github.com/tomoyukitanaka1171/haiku_com/assets/88293843/6bb1f983-ad45-4fe1-95a0-07fcd5fc5ff0)
-
 ## Graphql
 
 server の Grahpql スキーマと query.grpahql から型や Hooks を自動生成します
@@ -35,6 +33,9 @@ const haikusResponse = await apolloClient.query({
 # 設計方針
 
 `Redux` をベースにします。
+
+参考:
+![20230609185728](https://github.com/tomoyukitanaka1171/haiku_com/assets/88293843/ab0037c0-e361-4566-963a-39b4432955df)
 
 ## Behavior
 
