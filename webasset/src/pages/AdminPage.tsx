@@ -26,7 +26,6 @@ export function AdminPage() {
               ...state,
             },
           });
-          console.log(`save : ${result}`);
           e.preventDefault();
         }}
       >

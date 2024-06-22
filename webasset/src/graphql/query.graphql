@@ -117,10 +117,6 @@ query SearchLetters($searchLettersInput: SearchLettersInput) {
   }
 }
 
-query AllHaikusCount() {
-  count
-}
-
 query SearchHaikus($searchHaikusInput: SearchHaikusInput) {
   searchHaikus(searchHaikusInput: $searchHaikusInput) {
     ...HaikuContents
