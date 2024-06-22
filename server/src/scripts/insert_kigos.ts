@@ -4,7 +4,7 @@ import kigo from "./json/kigo.json" with { type: "json" };
 import sanitized from "./json/sanitized/sanitize_kigo.json" with { type: "json" };
 import { Kigo, Season } from "../model/Kigo";
 
-export const insertKigos = (source: DataSource) => {
+export const insertKigos = async (source: DataSource) => {
   // const first = source.getRepository(Kigo).find({
   //     where: {
   //         id: 1
@@ -20,7 +20,7 @@ export const insertKigos = (source: DataSource) => {
     kigo.nameKana = j.name_kana;
     return kigo;
   });
-  source.getRepository(Kigo).save(kigos);
+  await source.getRepository(Kigo).save(kigos);
 };
 
 export const insertSanitizedKigos = async (source: DataSource) => {
@@ -30,14 +30,11 @@ export const insertSanitizedKigos = async (source: DataSource) => {
     },
   });
 
-  console.log(first);
-
   if (first.length !== 0) return;
 
   const json = Array.from(
     new Map(sanitized.map((user) => [user.name, user])).values()
   );
-  console.log(json);
   const kigos = json.map((j) => {
     const kigo = new Kigo();
     kigo.name = j.name;
@@ -45,5 +42,5 @@ export const insertSanitizedKigos = async (source: DataSource) => {
     kigo.season = j.season as Season;
     return kigo;
   });
-  source.getRepository(Kigo).save(kigos);
+  await source.getRepository(Kigo).save(kigos);
 };

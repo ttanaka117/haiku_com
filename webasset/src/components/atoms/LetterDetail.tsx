@@ -21,11 +21,7 @@ export function LetterDetail(props: LetterDetailProps) {
     state.topPage.value.haikus.find((haiku) => haiku.id == params.letterId)
   );
 
-  console.log(haiku);
-
-  console.log(params.letterId);
   const rateMock = 4.4;
-  const ratePer = (rateMock / 5) * 100;
   return (
     <div className={styles.content_card}>
       {haiku == null ?? <div></div>}

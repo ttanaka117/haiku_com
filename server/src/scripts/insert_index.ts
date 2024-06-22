@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { DataSource, Repository, Transaction } from "typeorm";
 import { Poets } from "../model/Poet";
 import kigo from "./json/kigo.json" with { type: "json" };
 import sanitized from "./json/sanitized/sanitize_kigo.json" with { type: "json" };
@@ -25,21 +25,26 @@ const _toInputHaikus = (input: Haiku[]): inputIndexLetter[] => {
       id: i.id,
       text: i.text,
       text_kana: i.textKana,
-      season: i.kigo[0]?.season ? i.kigo[0].season : "",
+      season: "",
       author: i.author ? i.author?.name : "",
     };
   });
 };
-export const insertIndex = async (repository: HaikuRepository, client: Client) => {
-  const haikus = await repository.fetchHaikus()
-  if (!haikus) return;
+export const insertIndex = async (
+  repository: Repository<Haiku>,
+  client: Client
+) => {
+  const haikus = await repository.find();
 
-  const operations = _toInputHaikus(haikus).flatMap((doc) => [
-    { index: { _index: "haikus" } },
-    doc,
-  ]);
+  try {
+    // await client.indices.delete({ index: "haikus" });
+    const operations = _toInputHaikus(haikus).flatMap((doc) => [
+      { index: { _index: "haikus" } },
+      doc,
+    ]);
 
-  await client.bulk({
-    body: operations,
-  });
+    await client.bulk({
+      body: operations,
+    });
+  } catch {}
 };

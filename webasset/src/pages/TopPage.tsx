@@ -11,7 +11,8 @@ import { SearchHaikusDocument } from "../graphql/types";
 import { Haiku, toSeason } from "../model/haikus";
 import Pagination from "@mui/material/Pagination";
 import styles from "./TopPage.module.scss";
-import { haikuBehavior } from "../behavior/haiks_behavior";
+import { HaikuBehavior } from "../behavior/haiks_behavior";
+import { SearchBehavior } from "../behavior/search_behavior";
 import { GlobalLoader } from "../components/molecules/GlobalLoader";
 import { swapHaikus } from "../slice/haikuSlice";
 
@@ -22,6 +23,7 @@ export function TopPage() {
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+  const [pageCount, setPageCount] = useState(0);
 
   const [searchFormState, setSearchForm] = useState("");
 
@@ -29,14 +31,20 @@ export function TopPage() {
   const haikus = useSelector(
     (state: RootState) => state.haikuStore.value.haikus
   );
+  const allHaikusCount = useSelector(
+    (state: RootState) => state.haikuStore.allHaikusCount
+  );
 
   const [onSubmit, setOnSubmit] = useState(false);
-  const [behavior, setBehavior] = useState<haikuBehavior | null>(null);
-
-  console.log(haikus);
+  const [behavior, setBehavior] = useState<HaikuBehavior | null>(null);
+  const [searchBehavior, setSearchBehavior] = useState<SearchBehavior | null>(
+    null
+  );
 
   useLayoutEffect(() => {
-    const behavior = new haikuBehavior(apolloClient, dispatch);
+    const behavior = new HaikuBehavior(apolloClient, dispatch);
+    const searchBehavior = new SearchBehavior(apolloClient, dispatch);
+    setSearchBehavior(searchBehavior);
     setBehavior(behavior);
     if (behavior !== null) {
       behavior.initializeHaikus();
@@ -44,42 +52,24 @@ export function TopPage() {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      await behavior?.fetchHaikusWithPagination({
-        page: page,
-      });
-    })();
+    behavior?.fetchHaikusWithPagination({
+      page: page,
+    });
   }, [page]);
 
   useEffect(() => {
-    if (searchFormState === "") {
-      behavior?.initializeHaikus();
-      return;
-    }
-
-    (async () => {
-      const apolloQueryResult = await apolloClient.query<Response>({
-        query: SearchHaikusDocument,
-        variables: {
-          searchHaikusInput: {
-            text: searchFormState,
-            textKana: searchFormState,
-            author: searchFormState,
-            season: toSeason(searchFormState),
-          },
-        },
-      });
-      const searchResult: Haiku[] = apolloQueryResult.data.searchHaikus ?? [];
-      console.log(searchResult);
-
-      dispatch(swapHaikus({ haikus: searchResult }));
-    })();
-  }, [onSubmit]);
+    setPageCount(Math.floor(allHaikusCount / 50));
+  }, [allHaikusCount]);
 
   useEffect(() => {
-    if (searchFormState.length === 0) {
-    }
-  }, [searchFormState]);
+    (async () => {
+      if (searchFormState === "") {
+        behavior?.initializeHaikus();
+      } else {
+        searchBehavior?.searchHaikus({ input: searchFormState });
+      }
+    })();
+  }, [onSubmit]);
 
   return (
     <div>
@@ -149,7 +139,7 @@ export function TopPage() {
           </div>
         </Modal>
         <Pagination
-          count={40}
+          count={pageCount}
           className={styles.pagenation_wrapper}
           classes={{ ul: styles.pagenation_wrapper }}
           page={page}

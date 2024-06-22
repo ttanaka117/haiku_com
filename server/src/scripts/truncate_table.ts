@@ -7,9 +7,10 @@ import { Users } from "../model/Users";
 import { TYPES } from "../datasources/repository/types";
 
 export const trauncateTable = async (dataSource: DataSource) => {
-  await dataSource.getRepository(Poets).clear()
-  await dataSource.getRepository(Haiku).clear()
-  await dataSource.getRepository(Kigo).clear()
-  await dataSource.getRepository(Prefectures).clear()
-  await dataSource.getRepository(Users).clear()
+  await dataSource.getRepository(Poets).clear();
+  await dataSource.getRepository(Haiku).clear();
+  await dataSource.getRepository(Kigo).clear();
+  await dataSource.getRepository(Prefectures).clear();
+  await dataSource.getRepository(Users).clear();
+  console.log("truncated");
 };

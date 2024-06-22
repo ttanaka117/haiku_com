@@ -14,12 +14,17 @@ export class HaikuRepository {
   }
 
   async fetchHaikus() {
-    return await this.repository.find({
+    const result = await this.repository.find({
       relations: {
         author: true,
         kigo: true,
       },
     });
+    return result;
+  }
+
+  async fetchAllHaikusCount() {
+    return await this.repository.count();
   }
 
   async fetchHaikusByIds({ ids }: { ids: number[] }) {

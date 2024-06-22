@@ -2,14 +2,13 @@ import {
   ApolloClient,
   ApolloQueryResult,
   NormalizedCacheObject,
-  gql,
 } from "@apollo/client";
-import { HaikusDocument } from "../graphql/types";
+import { HaikusDocument, SearchHaikusDocument } from "../graphql/types";
 import { Haiku, HaikusEdges, toHaikuId } from "../model/haikus";
 import { AppDispatch } from "..";
 import { swapHaikus, isLoading, setAllHaikusCount } from "../slice/haikuSlice";
 
-export class HaikuBehavior {
+export class SearchBehavior {
   private client: ApolloClient<NormalizedCacheObject>;
   private dispatch: AppDispatch;
 
@@ -21,34 +20,22 @@ export class HaikuBehavior {
     this.dispatch = dispatch;
   }
 
-  async initializeHaikus() {
+  async searchHaikus({ input }: { input: string }) {
     this.dispatch(isLoading(true));
-    // Warning: 敢えてローダーを表示しています
-    await new Promise(function (resolve) {
-      setTimeout(resolve, 1000);
+    const apolloQueryResult = await this.client.query<Response>({
+      query: SearchHaikusDocument,
+      variables: {
+        searchHaikusInput: {
+          text: input,
+        },
+      },
     });
-    const response = await this.client.query({
-      query: gql`
-        query AllHaikusCount {
-          allHaikusCount
-        }
-      `,
-    });
-
-    this.dispatch(setAllHaikusCount(response.data.allHaikusCount));
-    this.dispatch(
-      swapHaikus({
-        haikus: _toModel(
-          await this.client.query({
-            query: HaikusDocument,
-            variables: {
-              limit: 50,
-              after: 1 * 50,
-            },
-          })
-        ),
-      })
-    );
+    type Response = {
+      searchHaikus: Haiku[];
+    };
+    const searchResult: Haiku[] = apolloQueryResult.data.searchHaikus ?? [];
+    this.dispatch(setAllHaikusCount(searchResult.length));
+    this.dispatch(swapHaikus({ haikus: searchResult }));
     this.dispatch(isLoading(false));
   }
 
@@ -60,31 +47,14 @@ export class HaikuBehavior {
         after: page * 50,
       },
     });
-
     this.dispatch(
       swapHaikus({
         haikus: _toModel(response),
       })
     );
   }
-
-  // async insertHaiku({ state } : {state: HaikuInput }) {
-  //   const response = await this.client.mutate({
-  //     mutation:
-  //   })
-  // }
 }
-// type HaikuInput = {
-//   id: number | null;
-//   penname: string;
-//   poetId: number;
-//   letterBody: string;
-//   letterBodyType: LetterBodyType;
-//   address: string;
-//   age: number;
-//   imageUrl: string;
-//   description: string;
-// };
+
 const _toModel = (response: ApolloQueryResult<HaikusEdges>): Haiku[] => {
   return response.data.haikus.edges.map((edge) => {
     return {

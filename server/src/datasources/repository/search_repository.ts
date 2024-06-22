@@ -7,10 +7,14 @@ export class SearchRepository {
     this.client = client;
   }
 
-  async search({ index, query }: { index: string; query: object }) {
+  async search({ index, input }: { index: string; input: object }) {
     return await this.client.search({
       index: index,
-      body: query,
+      body: {
+        query: {
+          ...input,
+        },
+      },
     });
   }
 }

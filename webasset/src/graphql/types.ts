@@ -154,6 +154,7 @@ export type Prefecture = {
 
 export type Query = {
   __typename?: 'Query';
+  allHaikusCount: Scalars['Int']['output'];
   haikus?: Maybe<HaikuConnection>;
   letter?: Maybe<Letter>;
   letters?: Maybe<Array<Maybe<Letter>>>;

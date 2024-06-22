@@ -45,34 +45,19 @@ export function PostLetterForm(props: { handleClose: () => void }) {
   });
   const { loading, error, data } = usePoetsQuery();
 
-  const [postsState, setPoetsState] = useState<Poet[]>([]);
   const [letterMutation] = useLetterMutation();
   const [createSearchLetterMutation] = useCreateSearchLetterMutation();
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    console.log(data);
-    if (data?.poets == undefined) return;
-
-    const poets = data?.poets.map((p) => {
-      return { id: Number(p?.id) ?? null, name: p?.name ?? null };
-    });
-
-    setPoetsState(poets);
-  }, [loading]);
+  useEffect(() => {}, [loading]);
 
   const handleMutation = async () => {
-    if (state.poetId == 0) {
-      toast("必須項目が入力されていません。");
-      return;
-    }
     try {
       const result = await letterMutation({
         variables: {
           ...state,
         },
       });
-      console.log(`letterMutation: ${result}`);
       const _fromCreateLetter = (fetchResult: FetchResult<LetterMutation>) => {
         return {
           id: fetchResult.data?.createLetter?.id?.toString() ?? "",
@@ -109,7 +94,6 @@ export function PostLetterForm(props: { handleClose: () => void }) {
       props.handleClose();
     } catch (e) {
       toast("投稿に失敗しました。");
-      console.log(error);
       console.log(e);
     }
   };
@@ -124,41 +108,6 @@ export function PostLetterForm(props: { handleClose: () => void }) {
         onReset={() => props.handleClose()}
       >
         <ul>
-          {/* <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>名前</h3>
-            <input
-              className={styles.form_input}
-              type="text"
-              placeholder={"名前"}
-              onChange={(e) =>
-                setState(
-                  produce(state, (draft) => {
-                    draft.penname = e.target.value;
-                  })
-                )
-              }
-            />
-          </li> */}
-          <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>名前</h3>
-            <Select
-              placeholder="名前"
-              className={`${styles.form_input_select}`}
-              options={postsState.map((poet) => {
-                return {
-                  value: poet.id,
-                  label: poet.name,
-                };
-              })}
-              onChange={(event) =>
-                setState(
-                  produce(state, (draft) => {
-                    draft.poetId = event?.value ?? 0;
-                  })
-                )
-              }
-            />
-          </li>
           <li className={styles.form_wrapper}>
             <h3 className={styles.form_label}>詩</h3>
             <textarea

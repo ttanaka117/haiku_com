@@ -3,10 +3,11 @@ import { fetchUsers } from "../controller/fetch_users";
 import { fetchPoets } from "../controller/fetch_poets";
 import { fetchHaikus } from "../controller/fetch_haikus";
 import { SearchHaikusInput, searchHaikus } from "../controller/search_haikus";
-import {  poetReposiory, searchRepository } from "..";
+import { poetReposiory, searchRepository } from "..";
 import container from "../inversify.config";
 import { TYPES } from "../datasources/repository/types";
 import { HaikuRepository } from "../datasources/repository/haiku_repository";
+import { fetchAllHaikusCount } from "../controller/fetch_all_haikus_count";
 
 export const createResolvers = () => {
   return {
@@ -18,6 +19,10 @@ export const createResolvers = () => {
           limit: input.limit,
           after: input.after,
         }),
+      allHaikusCount: async () =>
+        await fetchAllHaikusCount({
+          repository: container.get<HaikuRepository>(TYPES.HaikuRepository),
+        }),
       poets: async () =>
         await fetchPoets({
           repository: poetReposiory,
@@ -28,7 +33,9 @@ export const createResolvers = () => {
       ) => {
         return await searchHaikus({
           searchRespository: searchRepository,
-          haikuRepository: container.get<HaikuRepository>(TYPES.HaikuRepository),
+          haikuRepository: container.get<HaikuRepository>(
+            TYPES.HaikuRepository
+          ),
           input: input.searchHaikusInput,
         });
       },

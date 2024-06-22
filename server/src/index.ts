@@ -20,6 +20,8 @@ import { insertHaikus } from "./scripts/insert_haikus.js";
 import { insertSanitizedKigos } from "./scripts/insert_kigos.js";
 import { trauncateTable } from "./scripts/truncate_table.js";
 import { insertIndex } from "./scripts/insert_index.js";
+import { Haiku } from "./model/Haiku.js";
+import { insertHaijins } from "./scripts/insert_haijins.js";
 
 dotenv.config();
 const app = express();
@@ -48,9 +50,7 @@ console.log(`🚀  Server ready`);
 // TODO: DIコンテナに移動
 export const userReposiory = new UserRepository(dataSource);
 export const poetReposiory = new PoetsRepository(dataSource);
-const searchClient = container.get<Client>(
-  TYPES.Client
-)
+const searchClient = container.get<Client>(TYPES.Client);
 export const searchRepository = new SearchRepository({
   client: searchClient,
 });
@@ -59,11 +59,10 @@ export const searchRepository = new SearchRepository({
 try {
   console.log("start insert db");
   await trauncateTable(dataSource);
-  await insertSanitizedKigos(dataSource);
+  // await insertSanitizedKigos(dataSource);
+  // await insertHaijins(dataSource);
   await insertHaikus(dataSource);
-  await insertIndex(container.get<HaikuRepository>(
-    TYPES.HaikuRepository
-  ), searchClient);
+  await insertIndex(dataSource.getRepository(Haiku), searchClient);
 } catch (e) {
   console.log("insert error", e);
 }

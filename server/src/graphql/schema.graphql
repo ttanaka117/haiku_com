@@ -77,6 +77,7 @@ type Query {
   users: [User]
   letters: [Letter]
   haikus(limit: Int!, after: Int!): HaikuConnection
+  allHaikusCount: Int!
   poets: [Poet]
   searchLetters(searchLettersInput: SearchLettersInput): [Letter]
   searchHaikus(searchHaikusInput: SearchHaikusInput): [Haiku]

@@ -21,5 +21,5 @@ export const insertHaijins = async (source: DataSource) => {
     poets.diedYear = Number(j.died_year);
     return poets;
   });
-  source.getRepository(Poets).save(poets);
+  await source.getRepository(Poets).save(poets);
 };
