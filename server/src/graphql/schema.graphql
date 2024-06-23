@@ -111,28 +111,24 @@ input InputLetter {
   description: String
 }
 
-type likeLetterResponse {
+type likeHaikuResponse {
   likesCount: Int
 }
 
+type createHaikuResponse {
+  text: String
+  description: String
+}
+
 type Mutation {
-  createLetter(
-    penname: String
-    poetId: Int
-    age: Int
-    address: String
-    letterBody: String
-    letterBodyType: String
-    imageUrl: String
-    description: String
-  ): Letter
+  createHaiku(text: String, description: String): createHaikuResponse
   createPoet(
     name: String
     birthYear: String
     diedYear: String
     imageUrl: String
   ): Poet
-  likeLetter(id: Int): likeLetterResponse
+  likeHaiku(id: Int): likeHaikuResponse
   createSearchLetter(inputLetter: InputLetter): Boolean
 }
 

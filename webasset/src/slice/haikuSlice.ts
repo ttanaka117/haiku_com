@@ -26,11 +26,20 @@ export const haikuSlice = createSlice({
     setAllHaikusCount: (state, action: PayloadAction<number>) => {
       state.allHaikusCount = action.payload;
     },
+    likeHaiku: (state, action: PayloadAction<number>) => {
+      const target_index = state.value.haikus.findIndex(
+        (h) => h.id === action.payload
+      );
+
+      state.value.haikus[target_index].likesCount =
+        state.value.haikus[target_index].likesCount + 1;
+    },
     isLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
   },
 });
 
-export const { swapHaikus, isLoading, setAllHaikusCount } = haikuSlice.actions;
+export const { swapHaikus, isLoading, setAllHaikusCount, likeHaiku } =
+  haikuSlice.actions;
 export default haikuSlice.reducer;

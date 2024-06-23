@@ -58,11 +58,11 @@ export const searchRepository = new SearchRepository({
 // TODO: 初期データの投入方法を考える
 try {
   console.log("start insert db");
-  await trauncateTable(dataSource);
+  // await trauncateTable(dataSource);
   // await insertSanitizedKigos(dataSource);
   // await insertHaijins(dataSource);
-  await insertHaikus(dataSource);
-  await insertIndex(dataSource.getRepository(Haiku), searchClient);
+  // await insertHaikus(dataSource);
+  // await insertIndex(dataSource.getRepository(Haiku), searchClient);
 } catch (e) {
   console.log("insert error", e);
 }

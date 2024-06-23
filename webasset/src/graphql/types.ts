@@ -88,22 +88,16 @@ export type Letter = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createLetter?: Maybe<Letter>;
+  createHaiku?: Maybe<CreateHaikuResponse>;
   createPoet?: Maybe<Poet>;
   createSearchLetter?: Maybe<Scalars['Boolean']['output']>;
-  likeLetter?: Maybe<LikeLetterResponse>;
+  likeHaiku?: Maybe<LikeHaikuResponse>;
 };
 
 
-export type MutationCreateLetterArgs = {
-  address?: InputMaybe<Scalars['String']['input']>;
-  age?: InputMaybe<Scalars['Int']['input']>;
+export type MutationCreateHaikuArgs = {
   description?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-  letterBody?: InputMaybe<Scalars['String']['input']>;
-  letterBodyType?: InputMaybe<Scalars['String']['input']>;
-  penname?: InputMaybe<Scalars['String']['input']>;
-  poetId?: InputMaybe<Scalars['Int']['input']>;
+  text?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -120,7 +114,7 @@ export type MutationCreateSearchLetterArgs = {
 };
 
 
-export type MutationLikeLetterArgs = {
+export type MutationLikeHaikuArgs = {
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -213,8 +207,14 @@ export type User = {
   name?: Maybe<Scalars['String']['output']>;
 };
 
-export type LikeLetterResponse = {
-  __typename?: 'likeLetterResponse';
+export type CreateHaikuResponse = {
+  __typename?: 'createHaikuResponse';
+  description?: Maybe<Scalars['String']['output']>;
+  text?: Maybe<Scalars['String']['output']>;
+};
+
+export type LikeHaikuResponse = {
+  __typename?: 'likeHaikuResponse';
   likesCount?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -270,20 +270,6 @@ export type SearchHaikusQueryVariables = Exact<{
 
 export type SearchHaikusQuery = { __typename?: 'Query', searchHaikus?: Array<{ __typename?: 'Haiku', id?: number | null, text?: string | null, textKana?: string | null, description?: string | null, likesCount?: number | null, author?: { __typename?: 'Poet', id: string, name?: string | null, nameKana?: string | null, birthYear?: number | null, diedYear?: number | null } | null, kigo?: Array<{ __typename?: 'Kigo', id?: number | null, name?: string | null, nameKana?: string | null, season?: string | null } | null> | null } | null> | null };
 
-export type LetterMutationVariables = Exact<{
-  penname?: InputMaybe<Scalars['String']['input']>;
-  poetId?: InputMaybe<Scalars['Int']['input']>;
-  age?: InputMaybe<Scalars['Int']['input']>;
-  address?: InputMaybe<Scalars['String']['input']>;
-  letterBody?: InputMaybe<Scalars['String']['input']>;
-  letterBodyType?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type LetterMutation = { __typename?: 'Mutation', createLetter?: { __typename?: 'Letter', id?: number | null, penname?: string | null, age?: number | null, letterBody?: string | null, letterBodyType?: string | null, address?: string | null, likesCount?: number | null, description?: string | null, imageUrl?: string | null, poet?: { __typename?: 'Poet', id: string, name?: string | null, nameKana?: string | null, birthYear?: number | null, diedYear?: number | null } | null } | null };
-
 export type PoetMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']['input']>;
   nameKana?: InputMaybe<Scalars['String']['input']>;
@@ -294,6 +280,14 @@ export type PoetMutationVariables = Exact<{
 
 export type PoetMutation = { __typename?: 'Mutation', createPoet?: { __typename?: 'Poet', name?: string | null, nameKana?: string | null, birthYear?: number | null, diedYear?: number | null } | null };
 
+export type CreateHaikuMutationVariables = Exact<{
+  text?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CreateHaikuMutation = { __typename?: 'Mutation', createHaiku?: { __typename?: 'createHaikuResponse', text?: string | null, description?: string | null } | null };
+
 export type CreateSearchLetterMutationVariables = Exact<{
   inputLetter?: InputMaybe<InputLetter>;
 }>;
@@ -301,12 +295,12 @@ export type CreateSearchLetterMutationVariables = Exact<{
 
 export type CreateSearchLetterMutation = { __typename?: 'Mutation', createSearchLetter?: boolean | null };
 
-export type LikeLetterMutationVariables = Exact<{
+export type LikeHaikuMutationVariables = Exact<{
   id?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type LikeLetterMutation = { __typename?: 'Mutation', likeLetter?: { __typename?: 'likeLetterResponse', likesCount?: number | null } | null };
+export type LikeHaikuMutation = { __typename?: 'Mutation', likeHaiku?: { __typename?: 'likeHaikuResponse', likesCount?: number | null } | null };
 
 export const PoetContentsFragmentDoc = gql`
     fragment PoetContents on Poet {
@@ -648,55 +642,6 @@ export type SearchHaikusQueryHookResult = ReturnType<typeof useSearchHaikusQuery
 export type SearchHaikusLazyQueryHookResult = ReturnType<typeof useSearchHaikusLazyQuery>;
 export type SearchHaikusSuspenseQueryHookResult = ReturnType<typeof useSearchHaikusSuspenseQuery>;
 export type SearchHaikusQueryResult = Apollo.QueryResult<SearchHaikusQuery, SearchHaikusQueryVariables>;
-export const LetterDocument = gql`
-    mutation Letter($penname: String, $poetId: Int, $age: Int, $address: String, $letterBody: String, $letterBodyType: String, $imageUrl: String, $description: String) {
-  createLetter(
-    penname: $penname
-    poetId: $poetId
-    age: $age
-    address: $address
-    letterBody: $letterBody
-    letterBodyType: $letterBodyType
-    imageUrl: $imageUrl
-    description: $description
-  ) {
-    ...LetterContents
-  }
-}
-    ${LetterContentsFragmentDoc}`;
-export type LetterMutationFn = Apollo.MutationFunction<LetterMutation, LetterMutationVariables>;
-
-/**
- * __useLetterMutation__
- *
- * To run a mutation, you first call `useLetterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLetterMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [letterMutation, { data, loading, error }] = useLetterMutation({
- *   variables: {
- *      penname: // value for 'penname'
- *      poetId: // value for 'poetId'
- *      age: // value for 'age'
- *      address: // value for 'address'
- *      letterBody: // value for 'letterBody'
- *      letterBodyType: // value for 'letterBodyType'
- *      imageUrl: // value for 'imageUrl'
- *      description: // value for 'description'
- *   },
- * });
- */
-export function useLetterMutation(baseOptions?: Apollo.MutationHookOptions<LetterMutation, LetterMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LetterMutation, LetterMutationVariables>(LetterDocument, options);
-      }
-export type LetterMutationHookResult = ReturnType<typeof useLetterMutation>;
-export type LetterMutationResult = Apollo.MutationResult<LetterMutation>;
-export type LetterMutationOptions = Apollo.BaseMutationOptions<LetterMutation, LetterMutationVariables>;
 export const PoetDocument = gql`
     mutation Poet($name: String, $nameKana: String, $birthYear: String, $diedYear: String) {
   createPoet(name: $name, birthYear: $birthYear, diedYear: $diedYear) {
@@ -736,6 +681,41 @@ export function usePoetMutation(baseOptions?: Apollo.MutationHookOptions<PoetMut
 export type PoetMutationHookResult = ReturnType<typeof usePoetMutation>;
 export type PoetMutationResult = Apollo.MutationResult<PoetMutation>;
 export type PoetMutationOptions = Apollo.BaseMutationOptions<PoetMutation, PoetMutationVariables>;
+export const CreateHaikuDocument = gql`
+    mutation CreateHaiku($text: String, $description: String) {
+  createHaiku(text: $text, description: $description) {
+    text
+    description
+  }
+}
+    `;
+export type CreateHaikuMutationFn = Apollo.MutationFunction<CreateHaikuMutation, CreateHaikuMutationVariables>;
+
+/**
+ * __useCreateHaikuMutation__
+ *
+ * To run a mutation, you first call `useCreateHaikuMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateHaikuMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createHaikuMutation, { data, loading, error }] = useCreateHaikuMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useCreateHaikuMutation(baseOptions?: Apollo.MutationHookOptions<CreateHaikuMutation, CreateHaikuMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateHaikuMutation, CreateHaikuMutationVariables>(CreateHaikuDocument, options);
+      }
+export type CreateHaikuMutationHookResult = ReturnType<typeof useCreateHaikuMutation>;
+export type CreateHaikuMutationResult = Apollo.MutationResult<CreateHaikuMutation>;
+export type CreateHaikuMutationOptions = Apollo.BaseMutationOptions<CreateHaikuMutation, CreateHaikuMutationVariables>;
 export const CreateSearchLetterDocument = gql`
     mutation CreateSearchLetter($inputLetter: InputLetter) {
   createSearchLetter(inputLetter: $inputLetter)
@@ -767,36 +747,36 @@ export function useCreateSearchLetterMutation(baseOptions?: Apollo.MutationHookO
 export type CreateSearchLetterMutationHookResult = ReturnType<typeof useCreateSearchLetterMutation>;
 export type CreateSearchLetterMutationResult = Apollo.MutationResult<CreateSearchLetterMutation>;
 export type CreateSearchLetterMutationOptions = Apollo.BaseMutationOptions<CreateSearchLetterMutation, CreateSearchLetterMutationVariables>;
-export const LikeLetterDocument = gql`
-    mutation LikeLetter($id: Int) {
-  likeLetter(id: $id) {
+export const LikeHaikuDocument = gql`
+    mutation LikeHaiku($id: Int) {
+  likeHaiku(id: $id) {
     likesCount
   }
 }
     `;
-export type LikeLetterMutationFn = Apollo.MutationFunction<LikeLetterMutation, LikeLetterMutationVariables>;
+export type LikeHaikuMutationFn = Apollo.MutationFunction<LikeHaikuMutation, LikeHaikuMutationVariables>;
 
 /**
- * __useLikeLetterMutation__
+ * __useLikeHaikuMutation__
  *
- * To run a mutation, you first call `useLikeLetterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLikeLetterMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useLikeHaikuMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeHaikuMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [likeLetterMutation, { data, loading, error }] = useLikeLetterMutation({
+ * const [likeHaikuMutation, { data, loading, error }] = useLikeHaikuMutation({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useLikeLetterMutation(baseOptions?: Apollo.MutationHookOptions<LikeLetterMutation, LikeLetterMutationVariables>) {
+export function useLikeHaikuMutation(baseOptions?: Apollo.MutationHookOptions<LikeHaikuMutation, LikeHaikuMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LikeLetterMutation, LikeLetterMutationVariables>(LikeLetterDocument, options);
+        return Apollo.useMutation<LikeHaikuMutation, LikeHaikuMutationVariables>(LikeHaikuDocument, options);
       }
-export type LikeLetterMutationHookResult = ReturnType<typeof useLikeLetterMutation>;
-export type LikeLetterMutationResult = Apollo.MutationResult<LikeLetterMutation>;
-export type LikeLetterMutationOptions = Apollo.BaseMutationOptions<LikeLetterMutation, LikeLetterMutationVariables>;
+export type LikeHaikuMutationHookResult = ReturnType<typeof useLikeHaikuMutation>;
+export type LikeHaikuMutationResult = Apollo.MutationResult<LikeHaikuMutation>;
+export type LikeHaikuMutationOptions = Apollo.BaseMutationOptions<LikeHaikuMutation, LikeHaikuMutationVariables>;

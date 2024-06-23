@@ -123,30 +123,6 @@ query SearchHaikus($searchHaikusInput: SearchHaikusInput) {
   }
 }
 
-mutation Letter(
-  $penname: String
-  $poetId: Int
-  $age: Int
-  $address: String
-  $letterBody: String
-  $letterBodyType: String
-  $imageUrl: String
-  $description: String
-) {
-  createLetter(
-    penname: $penname
-    poetId: $poetId
-    age: $age
-    address: $address
-    letterBody: $letterBody
-    letterBodyType: $letterBodyType
-    imageUrl: $imageUrl
-    description: $description
-  ) {
-    ...LetterContents
-  }
-}
-
 mutation Poet(
   $name: String
   $nameKana: String
@@ -161,12 +137,19 @@ mutation Poet(
   }
 }
 
+mutation CreateHaiku($text: String, $description: String) {
+  createHaiku(text: $text, description: $description) {
+    text
+    description
+  }
+}
+
 mutation CreateSearchLetter($inputLetter: InputLetter) {
   createSearchLetter(inputLetter: $inputLetter)
 }
 
-mutation LikeLetter($id: Int) {
-  likeLetter(id: $id) {
+mutation LikeHaiku($id: Int) {
+  likeHaiku(id: $id) {
     likesCount
   }
 }

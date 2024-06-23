@@ -42,11 +42,15 @@ export const searchHaikus = async ({
       },
     },
   });
+
+  console.log(body.hits.hits);
   const haikus = await haikuRepository.fetchHaikusByIds({
     ids: body.hits.hits.map((h: Hit) => {
+      console.log(h._source.id);
       return Number(h._source.id);
     }),
   });
+  console.log(haikus);
 
   return haikus;
 };

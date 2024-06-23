@@ -1,4 +1,6 @@
 import { Client } from "@elastic/elasticsearch";
+import { toInputHaikus } from "../../scripts/insert_index";
+import { Haiku } from "../../model/Haiku";
 
 export class SearchRepository {
   private client: Client;
@@ -14,6 +16,19 @@ export class SearchRepository {
         query: {
           ...input,
         },
+      },
+    });
+  }
+
+  async add_haiku(input: Haiku) {
+    return await this.client.index({
+      index: "haikus",
+      body: {
+        id: input.id,
+        text: input.text,
+        text_kana: "",
+        season: "",
+        author: "",
       },
     });
   }

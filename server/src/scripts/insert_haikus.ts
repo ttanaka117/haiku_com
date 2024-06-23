@@ -19,12 +19,14 @@ export const insertHaikus = async (source: DataSource) => {
     new Map(haikus.map((haiku) => [haiku.text, haiku])).values()
   );
 
-  json.map(async (j) => {
+  const newHaikus = json.map((j) => {
     const haikuEntity = new Haiku();
     haikuEntity.text = j.text;
     haikuEntity.textKana = j.text_kana;
     haikuEntity.description = null;
     haikuEntity.likesCount = 0;
-    await source.getRepository(Haiku).save(haikuEntity);
+    return haikuEntity;
   });
+
+  await source.getRepository(Haiku).save(newHaikus);
 };

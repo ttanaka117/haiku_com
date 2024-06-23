@@ -1,12 +1,6 @@
-import { DataSource, Repository, Transaction } from "typeorm";
-import { Poets } from "../model/Poet";
-import kigo from "./json/kigo.json" with { type: "json" };
-import sanitized from "./json/sanitized/sanitize_kigo.json" with { type: "json" };
-import { Kigo, Season } from "../model/Kigo";
+import { Repository } from "typeorm";
 import { Client } from "@elastic/elasticsearch";
 import { Haiku } from "../model/Haiku";
-import { SearchRepository } from "../datasources/repository/search_repository";
-import { HaikuRepository } from "../datasources/repository/haiku_repository";
 
 type IndexLetter = {
   id?: number;
@@ -19,12 +13,12 @@ type IndexLetter = {
 type inputIndexLetter = {
   [key in keyof IndexLetter]: string | number;
 };
-const _toInputHaikus = (input: Haiku[]): inputIndexLetter[] => {
+export const toInputHaikus = (input: Haiku[]): inputIndexLetter[] => {
   return input.map((i) => {
     return {
       id: i.id,
       text: i.text,
-      text_kana: i.textKana,
+      text_kana: "",
       season: "",
       author: i.author ? i.author?.name : "",
     };
@@ -35,16 +29,13 @@ export const insertIndex = async (
   client: Client
 ) => {
   const haikus = await repository.find();
+  console.log(haikus);
+  const operations = toInputHaikus(haikus).flatMap((doc) => [
+    { index: { _index: "haikus" } },
+    doc,
+  ]);
 
-  try {
-    // await client.indices.delete({ index: "haikus" });
-    const operations = _toInputHaikus(haikus).flatMap((doc) => [
-      { index: { _index: "haikus" } },
-      doc,
-    ]);
-
-    await client.bulk({
-      body: operations,
-    });
-  } catch {}
+  await client.bulk({
+    body: operations,
+  });
 };

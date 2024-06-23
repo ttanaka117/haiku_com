@@ -8,6 +8,10 @@ import container from "../inversify.config";
 import { TYPES } from "../datasources/repository/types";
 import { HaikuRepository } from "../datasources/repository/haiku_repository";
 import { fetchAllHaikusCount } from "../controller/fetch_all_haikus_count";
+import { likeHaiku } from "../controller/like_haiku";
+import { createHaiku } from "../controller/create_haiku";
+import { dataSource } from "../datasource";
+import { SearchRepository } from "../datasources/repository/search_repository";
 
 export const createResolvers = () => {
   return {
@@ -41,34 +45,13 @@ export const createResolvers = () => {
       },
     },
     Mutation: {
-      // Todo: Implements Haiku
-      // createHaiku: async (
-      //   _,
-      //   {
-      //     penname,
-      //     poetId,
-      //     letterBody,
-      //     letterBodyType,
-      //     address,
-      //     age,
-      //     imageUrl,
-      //     description,
-      //   }
-      // ) =>
-      //   await createHaiku(source, {
-      //     penname: penname,
-      //     poetId: poetId,
-      //     letterBody: letterBody,
-      //     letterBodyType: letterBodyType,
-      //     address: address,
-      //     age: age,
-      //     imageUrl: imageUrl,
-      //     description: description,
-      //   }),
-      // likeLetter: async (_, { id }) =>
-      //   await likeLetter(source, {
-      //     id: id,
-      //   }),
+      createHaiku: async (_, { text, description }) =>
+        await createHaiku(dataSource, searchRepository, {
+          text: text,
+          description: description,
+        }),
+      likeHaiku: async (_, { id }) =>
+        await likeHaiku(container.get<DataSource>(TYPES.DataSource), id),
     },
   };
 };

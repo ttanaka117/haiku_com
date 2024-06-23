@@ -1,18 +1,22 @@
 import { Link } from "react-router-dom";
 import styles from "./LetterContentCard.module.scss";
 import { Letter } from "../../model/letters";
-import { useLikeLetterMutation } from "../../graphql/types";
+import {
+  useLikeHaikuMutation,
+  useLikeLetterMutation,
+} from "../../graphql/types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../..";
 // import { likeLetter } from "../../slice/topPageSlice";
 import { useState } from "react";
 import { Haiku } from "../../model/haikus";
+import { likeHaiku } from "../../slice/haikuSlice";
 
 export function LetterContentCard(props: Haiku) {
   const rateMock = 4.4;
   // const ratePer = (rateMock / 5) * 100;
 
-  const [mutation, { data, error }] = useLikeLetterMutation();
+  const [mutation, { data, error }] = useLikeHaikuMutation();
   const dispatch = useDispatch<AppDispatch>();
   const [disabled, setDisabled] = useState(false);
 
@@ -28,8 +32,8 @@ export function LetterContentCard(props: Haiku) {
             onClick={() => {
               if (disabled) return;
               try {
-                // mutation({ variables: { id: parseInt(props.id) } });
-                // dispatch(likeLetter(props.id));
+                mutation({ variables: { id: parseInt(props.id.toString()) } });
+                dispatch(likeHaiku(props.id));
                 setDisabled(true);
               } catch {}
             }}

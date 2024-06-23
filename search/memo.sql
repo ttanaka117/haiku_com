@@ -4,7 +4,7 @@ curl -XGET http://localhost:9200/
 
 ## インデックス一覧
 
-curl -XGET "http://localhost:9200/_cat/indices?"
+curl -XGET 'localhost:9200/_cat/indices?'
 curl -XGET 'localhost:9200/haikus/_mapping?pretty' 
 curl -XGET 'localhost:9200/haikus/_doc?pretty' 
 

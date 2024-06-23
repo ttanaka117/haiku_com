@@ -5,6 +5,7 @@ import { produce } from "immer";
 import Select from "react-select";
 import {
   LetterMutation,
+  useCreateHaikuMutation,
   useCreateSearchLetterMutation,
   useLetterMutation,
   usePoetsQuery,
@@ -13,6 +14,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../..";
 import { addLetter } from "../../slice/topPageSlice";
+import { swapHaikus } from "../../slice/haikuSlice";
 
 type LetterBodyType = "詩" | "定型俳句" | "自由律俳句" | "その他";
 type FormLetter = {
@@ -45,7 +47,7 @@ export function PostLetterForm(props: { handleClose: () => void }) {
   });
   const { loading, error, data } = usePoetsQuery();
 
-  const [letterMutation] = useLetterMutation();
+  const [haikuMutation] = useCreateHaikuMutation();
   const [createSearchLetterMutation] = useCreateSearchLetterMutation();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -53,41 +55,10 @@ export function PostLetterForm(props: { handleClose: () => void }) {
 
   const handleMutation = async () => {
     try {
-      const result = await letterMutation({
+      await haikuMutation({
         variables: {
-          ...state,
-        },
-      });
-      const _fromCreateLetter = (fetchResult: FetchResult<LetterMutation>) => {
-        return {
-          id: fetchResult.data?.createLetter?.id?.toString() ?? "",
-          penname: fetchResult.data?.createLetter?.penname ?? "",
-          poet: {
-            id: fetchResult.data?.createLetter?.poet?.id ?? "",
-            name: fetchResult.data?.createLetter?.poet?.name ?? "",
-            birthYear: fetchResult.data?.createLetter?.poet?.birthYear ?? 0,
-            diedYear: fetchResult.data?.createLetter?.poet?.diedYear ?? 0,
-            imageUrl: fetchResult.data?.createLetter?.poet?.imageUrl ?? "",
-          },
-          letterBody: fetchResult.data?.createLetter?.letterBody ?? "",
-          letterBodyType: fetchResult.data?.createLetter?.letterBodyType ?? "",
-          age: fetchResult.data?.createLetter?.age ?? 0,
-          imageUrl: fetchResult.data?.createLetter?.imageUrl ?? "",
-          address: fetchResult.data?.createLetter?.address ?? "",
-          description: fetchResult.data?.createLetter?.description ?? "",
-          likesCount: 0,
-        };
-      };
-      dispatch(addLetter(_fromCreateLetter(result)));
-      await createSearchLetterMutation({
-        variables: {
-          inputLetter: {
-            id: Number(_fromCreateLetter(result).id),
-            penname: _fromCreateLetter(result).penname,
-            letterBody: _fromCreateLetter(result).letterBody,
-            letterBodyType: _fromCreateLetter(result).letterBodyType,
-            description: _fromCreateLetter(result).description,
-          },
+          text: state.letterBody,
+          description: state.description,
         },
       });
       toast("投稿しました。");
