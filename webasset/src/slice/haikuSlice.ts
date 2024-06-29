@@ -24,6 +24,8 @@ export const haikuSlice = createSlice({
       state.value.haikus = action.payload.haikus;
     },
     addHaiku: (state, action: PayloadAction<Haiku>) => {
+      console.log("add haiku!!");
+      console.log(action.payload);
       state.value.haikus = [...state.value.haikus, action.payload];
     },
     sortHaikuByPriority: (state, _: PayloadAction) => {

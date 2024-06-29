@@ -102,17 +102,19 @@ export class HaikuBehavior {
   }
 
   async addHaiku({ text, description }: { text: string; description: string }) {
-    await this.client.mutate({
+    const result = await this.client.mutate({
       mutation: CreateHaikuDocument,
       variables: {
         text: text,
         description: description,
       },
     });
+    console.log("add haiku result");
+    console.log(result);
     this.dispatch(
       addHaiku({
-        id: toHaikuId(1000000000),
-        text: text,
+        id: toHaikuId(result.data.createHaiku.id),
+        text: result.data.createHaiku.text,
         textKana: "",
         author: null,
         kigo: [],

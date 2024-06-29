@@ -36,8 +36,8 @@ export type Haiku = {
 
 export type HaikuConnection = {
   __typename?: 'HaikuConnection';
-  edges: Array<HaikuEdge>;
-  pageInfo: PageInfo;
+  edges?: Maybe<Array<Maybe<HaikuEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
 };
 
 export type HaikuEdge = {
@@ -216,6 +216,7 @@ export type User = {
 export type CreateHaikuResponse = {
   __typename?: 'createHaikuResponse';
   description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
   text?: Maybe<Scalars['String']['output']>;
 };
 
@@ -255,7 +256,7 @@ export type HaikusQueryVariables = Exact<{
 }>;
 
 
-export type HaikusQuery = { __typename?: 'Query', haikus?: { __typename?: 'HaikuConnection', edges: Array<{ __typename?: 'HaikuEdge', node?: { __typename?: 'Haiku', id?: number | null, text?: string | null, textKana?: string | null, description?: string | null, likesCount?: number | null, author?: { __typename?: 'Poet', id: string, name?: string | null, nameKana?: string | null, birthYear?: number | null, diedYear?: number | null } | null, kigo?: Array<{ __typename?: 'Kigo', id?: number | null, name?: string | null, nameKana?: string | null, season?: string | null } | null> | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } } | null };
+export type HaikusQuery = { __typename?: 'Query', haikus?: { __typename?: 'HaikuConnection', edges?: Array<{ __typename?: 'HaikuEdge', node?: { __typename?: 'Haiku', id?: number | null, text?: string | null, textKana?: string | null, description?: string | null, likesCount?: number | null, author?: { __typename?: 'Poet', id: string, name?: string | null, nameKana?: string | null, birthYear?: number | null, diedYear?: number | null } | null, kigo?: Array<{ __typename?: 'Kigo', id?: number | null, name?: string | null, nameKana?: string | null, season?: string | null } | null> | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } | null } | null };
 
 export type PoetsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -292,7 +293,7 @@ export type CreateHaikuMutationVariables = Exact<{
 }>;
 
 
-export type CreateHaikuMutation = { __typename?: 'Mutation', createHaiku?: { __typename?: 'createHaikuResponse', text?: string | null, description?: string | null } | null };
+export type CreateHaikuMutation = { __typename?: 'Mutation', createHaiku?: { __typename?: 'createHaikuResponse', id?: number | null, text?: string | null, description?: string | null } | null };
 
 export type CreateSearchLetterMutationVariables = Exact<{
   inputLetter?: InputMaybe<InputLetter>;
@@ -697,6 +698,7 @@ export type PoetMutationOptions = Apollo.BaseMutationOptions<PoetMutation, PoetM
 export const CreateHaikuDocument = gql`
     mutation CreateHaiku($text: String, $description: String) {
   createHaiku(text: $text, description: $description) {
+    id
     text
     description
   }

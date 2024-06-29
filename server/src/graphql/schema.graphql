@@ -116,6 +116,7 @@ type likeHaikuResponse {
 }
 
 type createHaikuResponse {
+  id: Int
   text: String
   description: String
 }

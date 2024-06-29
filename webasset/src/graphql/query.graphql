@@ -139,6 +139,7 @@ mutation Poet(
 
 mutation CreateHaiku($text: String, $description: String) {
   createHaiku(text: $text, description: $description) {
+    id
     text
     description
   }

@@ -20,7 +20,8 @@ export const createHaiku = async (
   await source.getRepository(Haiku).save(newHaiku);
   await searchRespository.add_haiku(newHaiku);
   return {
-    text: input.text,
-    description: input.description,
+    id: newHaiku.id,
+    text: newHaiku.text,
+    description: newHaiku.description,
   };
 };

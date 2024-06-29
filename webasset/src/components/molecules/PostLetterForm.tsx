@@ -80,10 +80,10 @@ export function PostLetterForm(props: { handleClose: () => void }) {
       >
         <ul>
           <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>やるべきこと</h3>
+            <h3 className={styles.form_label}>タスク名</h3>
             <textarea
               className={styles.form_input}
-              placeholder={"やるべきこと"}
+              placeholder={"タスク名"}
               onChange={(e) =>
                 setState(
                   produce(state, (draft) => {
@@ -134,7 +134,7 @@ export function PostLetterForm(props: { handleClose: () => void }) {
           </li>
           <div className={`${styles.form_submit_wrapper} m-t40`}>
             <button type="submit" value="保存" className={styles.form_submit}>
-              投稿する
+              追加する
             </button>
             <button
               type="reset"

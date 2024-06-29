@@ -17,6 +17,8 @@ import { GlobalLoader } from "../components/molecules/GlobalLoader";
 type Response = {
   searchHaikus: Haiku[];
 };
+
+const ItemCountByPage = 50;
 export function TopPage() {
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState(1);
@@ -56,7 +58,7 @@ export function TopPage() {
   }, [page]);
 
   useEffect(() => {
-    setPageCount(Math.floor(allHaikusCount / 50));
+    setPageCount(Math.floor(allHaikusCount / ItemCountByPage));
   }, [allHaikusCount]);
 
   useEffect(() => {
@@ -152,15 +154,17 @@ export function TopPage() {
             />
           </div>
         </Modal>
-        <Pagination
-          count={pageCount}
-          className={styles.pagenation_wrapper}
-          classes={{ ul: styles.pagenation_wrapper }}
-          page={page}
-          onChange={(_, page) => {
-            setPage(page);
-          }}
-        />
+        {haikus.length > ItemCountByPage ?? (
+          <Pagination
+            count={pageCount}
+            className={styles.pagenation_wrapper}
+            classes={{ ul: styles.pagenation_wrapper }}
+            page={page}
+            onChange={(_, page) => {
+              setPage(page);
+            }}
+          />
+        )}
       </div>
     </div>
   );
