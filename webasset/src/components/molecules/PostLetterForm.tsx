@@ -1,20 +1,16 @@
-import { FetchResult } from "@apollo/client";
 import styles from "./PostLetterForm.module.scss";
-import { useEffect, useState } from "react";
-import { produce } from "immer";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Select from "react-select";
+import { produce } from "immer";
 import {
-  LetterMutation,
   useCreateHaikuMutation,
   useCreateSearchLetterMutation,
-  useLetterMutation,
   usePoetsQuery,
 } from "../../graphql/types";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../..";
-import { addLetter } from "../../slice/topPageSlice";
-import { swapHaikus } from "../../slice/haikuSlice";
+import { AppDispatch, apolloClient } from "../..";
+import { HaikuBehavior } from "../../behavior/haiks_behavior";
 
 type LetterBodyType = "詩" | "定型俳句" | "自由律俳句" | "その他";
 type FormLetter = {
@@ -50,16 +46,20 @@ export function PostLetterForm(props: { handleClose: () => void }) {
   const [haikuMutation] = useCreateHaikuMutation();
   const [createSearchLetterMutation] = useCreateSearchLetterMutation();
   const dispatch = useDispatch<AppDispatch>();
+  const [behavior, setBehavior] = useState<HaikuBehavior | null>(null);
+  const [done, setDone] = useState(1);
 
+  useLayoutEffect(() => {
+    const behavior = new HaikuBehavior(apolloClient, dispatch);
+    setBehavior(behavior);
+  }, []);
   useEffect(() => {}, [loading]);
 
   const handleMutation = async () => {
     try {
-      await haikuMutation({
-        variables: {
-          text: state.letterBody,
-          description: state.description,
-        },
+      await behavior?.addHaiku({
+        text: state.letterBody,
+        description: state.description,
       });
       toast("投稿しました。");
       props.handleClose();
@@ -80,10 +80,10 @@ export function PostLetterForm(props: { handleClose: () => void }) {
       >
         <ul>
           <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>詩</h3>
+            <h3 className={styles.form_label}>やるべきこと</h3>
             <textarea
               className={styles.form_input}
-              placeholder={"詩"}
+              placeholder={"やるべきこと"}
               onChange={(e) =>
                 setState(
                   produce(state, (draft) => {
@@ -93,8 +93,32 @@ export function PostLetterForm(props: { handleClose: () => void }) {
               }
             />
           </li>
+          {/* <Select
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                padding: "7px",
+                border: "none",
+                fontSize: "14px",
+              }),
+            }}
+            placeholder="作家名"
+            className={`${styles.form_input_select}`}
+            options={[
+              { value: undefined, label: "指定しない" },
+              { value: "種田山頭火", label: "種田山頭火" },
+              { value: "尾崎放哉", label: "尾崎放哉" },
+            ]}
+            onChange={(e) =>
+              setState(
+                produce(state, (draft) => {
+                  draft.description = e?.value ?? "";
+                })
+              )
+            }
+          /> */}
           <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>詩の説明</h3>
+            <h3 className={styles.form_label}>説明</h3>
             <input
               className={styles.form_input}
               type="text"
@@ -103,42 +127,6 @@ export function PostLetterForm(props: { handleClose: () => void }) {
                 setState(
                   produce(state, (draft) => {
                     draft.description = e.target.value;
-                  })
-                )
-              }
-            />
-          </li>
-          <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>形式</h3>
-            <Select
-              placeholder="形式"
-              className={`${styles.form_input_select}`}
-              options={[
-                { value: "詩", label: "詩" },
-                { value: "定型俳句", label: "定型俳句" },
-                { value: "自由律俳句", label: "自由律俳句" },
-                { value: "その他", label: "その他" },
-              ]}
-              onChange={(event) =>
-                setState(
-                  produce(state, (draft) => {
-                    draft.letterBodyType =
-                      (event?.value as LetterBodyType) ?? "その他";
-                  })
-                )
-              }
-            />
-          </li>
-          <li className={styles.form_wrapper}>
-            <h3 className={styles.form_label}>読まれた場所</h3>
-            <input
-              className={styles.form_input}
-              type="text"
-              placeholder={"読まれた場所"}
-              onChange={(e) =>
-                setState(
-                  produce(state, (draft) => {
-                    draft.address = e.target.value;
                   })
                 )
               }

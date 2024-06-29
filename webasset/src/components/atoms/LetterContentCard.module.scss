@@ -7,6 +7,7 @@
   background-color: #ffffff;
   @include box-shadow;
   color: #4d4d4d;
+  transition: 0.4s;
 }
 .like_button {
   cursor: pointer;
@@ -26,11 +27,36 @@
 }
 
 .letterBody {
+  display: flex;
+  justify-content: space-between;
   font-size: 18px;
   letter-spacing: 1.5px;
   font-weight: bold;
   /* font-style: italic; */
   color: #333333;
+}
+
+.iconDone {
+  transition: 0.8s;
+  @include box-shadow-secondary;
+
+  &:hover {
+    opacity: 0.8;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  height: 25px;
+  width: 25px;
+  border: 1px solid rgb(57, 57, 57);
+
+  > i {
+    &:hover {
+      opacity: 0.8;
+    }
+    color: rgb(57, 57, 57);
+  }
 }
 
 .letterBodyBottom {

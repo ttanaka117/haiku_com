@@ -8,6 +8,9 @@ import { Haiku, HaikusEdges, toHaikuId } from "../model/haikus";
 import { AppDispatch } from "..";
 import { swapHaikus, isLoading, setAllHaikusCount } from "../slice/haikuSlice";
 
+type Response = {
+  searchHaikus: Haiku[];
+};
 export class SearchBehavior {
   private client: ApolloClient<NormalizedCacheObject>;
   private dispatch: AppDispatch;
@@ -30,9 +33,6 @@ export class SearchBehavior {
         },
       },
     });
-    type Response = {
-      searchHaikus: Haiku[];
-    };
     const searchResult: Haiku[] = apolloQueryResult.data.searchHaikus ?? [];
     this.dispatch(setAllHaikusCount(searchResult.length));
     this.dispatch(swapHaikus({ haikus: searchResult }));

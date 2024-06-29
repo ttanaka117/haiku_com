@@ -14,9 +14,9 @@ export function SearchForm(props: SearchFormProps) {
           type="text"
           onInput={(v) => props.setState(v.currentTarget.value.trimEnd())}
           onKeyDown={(e) => (e.code === "Enter" ? props.onSubmit() : null)}
-          placeholder={"名前・詞・キーワード"}
+          placeholder={"タスクを探す"}
         />
-        <Select
+        {/* <Select
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,
@@ -37,7 +37,7 @@ export function SearchForm(props: SearchFormProps) {
               ? props.setState(v?.value.trimEnd())
               : props.setState("")
           }
-        />
+        /> */}
         <label
           className={styles.search_form_label}
           onClick={() => props.onSubmit()}

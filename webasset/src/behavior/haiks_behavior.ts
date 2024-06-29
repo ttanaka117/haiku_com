@@ -4,10 +4,21 @@ import {
   NormalizedCacheObject,
   gql,
 } from "@apollo/client";
-import { HaikusDocument } from "../graphql/types";
+import {
+  CreateHaikuDocument,
+  DoneHaikuDocument,
+  HaikusDocument,
+} from "../graphql/types";
 import { Haiku, HaikusEdges, toHaikuId } from "../model/haikus";
 import { AppDispatch } from "..";
-import { swapHaikus, isLoading, setAllHaikusCount } from "../slice/haikuSlice";
+import {
+  swapHaikus,
+  isLoading,
+  setAllHaikusCount,
+  doneHaiku,
+  addHaiku,
+  sortHaikuByPriority,
+} from "../slice/haikuSlice";
 
 export class HaikuBehavior {
   private client: ApolloClient<NormalizedCacheObject>;
@@ -36,6 +47,10 @@ export class HaikuBehavior {
     });
 
     this.dispatch(setAllHaikusCount(response.data.allHaikusCount));
+    if (!response.data.allHaikusCount) {
+      this.dispatch(isLoading(false));
+      return;
+    }
     this.dispatch(
       swapHaikus({
         haikus: _toModel(
@@ -43,13 +58,28 @@ export class HaikuBehavior {
             query: HaikusDocument,
             variables: {
               limit: 50,
-              after: 1 * 50,
+              after: 0,
             },
           })
         ),
       })
     );
     this.dispatch(isLoading(false));
+  }
+
+  sortHaikuByPriority() {
+    this.dispatch(sortHaikuByPriority());
+  }
+
+  async doneHaiku({ haiku_id }: { haiku_id: number }) {
+    this.dispatch(doneHaiku(haiku_id));
+    const result = await this.client.mutate({
+      mutation: DoneHaikuDocument,
+      variables: {
+        id: haiku_id,
+      },
+    });
+    console.log(result);
   }
 
   async fetchHaikusWithPagination({ page }: { page: number }) {
@@ -60,6 +90,9 @@ export class HaikuBehavior {
         after: page * 50,
       },
     });
+    if (!response.data.haikus.edges.length) {
+      return;
+    }
 
     this.dispatch(
       swapHaikus({
@@ -68,11 +101,25 @@ export class HaikuBehavior {
     );
   }
 
-  // async insertHaiku({ state } : {state: HaikuInput }) {
-  //   const response = await this.client.mutate({
-  //     mutation:
-  //   })
-  // }
+  async addHaiku({ text, description }: { text: string; description: string }) {
+    await this.client.mutate({
+      mutation: CreateHaikuDocument,
+      variables: {
+        text: text,
+        description: description,
+      },
+    });
+    this.dispatch(
+      addHaiku({
+        id: toHaikuId(1000000000),
+        text: text,
+        textKana: "",
+        author: null,
+        kigo: [],
+        likesCount: 0,
+      })
+    );
+  }
 }
 // type HaikuInput = {
 //   id: number | null;

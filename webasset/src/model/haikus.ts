@@ -14,7 +14,7 @@ export type Haiku = {
   id: HaikuId;
   text: string;
   textKana: string;
-  author: Poet;
+  author: Poet | null;
   kigo: Kigo[];
   likesCount: number;
 };

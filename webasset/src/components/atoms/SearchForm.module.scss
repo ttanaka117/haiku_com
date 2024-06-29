@@ -21,19 +21,19 @@
   border: none;
   height: 100%;
   border-radius: 5px;
-  width: 65%;
+  width: 80%;
   @include box-shadow;
 }
 
-.search_form_input_name {
-  padding: 20px;
-  border: none;
-  height: 100%;
-  border-radius: 5px;
-  width: 20%;
-  @include box-shadow;
-  margin: 0 10px;
-}
+// .search_form_input_name {
+//   padding: 20px;
+//   border: none;
+//   height: 100%;
+//   border-radius: 5px;
+//   width: 20%;
+//   @include box-shadow;
+//   margin: 0 10px;
+// }
 
 .form_input_select {
   width: 20%;
@@ -55,8 +55,10 @@
   display: flex;
   font-weight: bold;
   justify-content: center;
-  background-color: rgb(55, 55, 55);
+  background-color: rgb(99, 99, 99);
+  // @include theme-bg-color;
   color: white;
+  @include box-shadow;
 }
 
 .title {

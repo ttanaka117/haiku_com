@@ -12,6 +12,7 @@ import { likeHaiku } from "../controller/like_haiku";
 import { createHaiku } from "../controller/create_haiku";
 import { dataSource } from "../datasource";
 import { SearchRepository } from "../datasources/repository/search_repository";
+import { doneHaiku } from "../controller/done_haiku";
 
 export const createResolvers = () => {
   return {
@@ -52,6 +53,8 @@ export const createResolvers = () => {
         }),
       likeHaiku: async (_, { id }) =>
         await likeHaiku(container.get<DataSource>(TYPES.DataSource), id),
+      doneHaiku: async (_, { id }) =>
+        await doneHaiku(container.get<DataSource>(TYPES.DataSource), id),
     },
   };
 };

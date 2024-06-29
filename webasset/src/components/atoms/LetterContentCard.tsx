@@ -1,53 +1,64 @@
-import { Link } from "react-router-dom";
 import styles from "./LetterContentCard.module.scss";
-import { Letter } from "../../model/letters";
-import {
-  useLikeHaikuMutation,
-  useLikeLetterMutation,
-} from "../../graphql/types";
+import { useLikeHaikuMutation } from "../../graphql/types";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../..";
+import { AppDispatch, apolloClient } from "../..";
 // import { likeLetter } from "../../slice/topPageSlice";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Haiku } from "../../model/haikus";
 import { likeHaiku } from "../../slice/haikuSlice";
+import { HaikuBehavior } from "../../behavior/haiks_behavior";
 
 export function LetterContentCard(props: Haiku) {
-  const rateMock = 4.4;
-  // const ratePer = (rateMock / 5) * 100;
-
-  const [mutation, { data, error }] = useLikeHaikuMutation();
+  const [mutation] = useLikeHaikuMutation();
   const dispatch = useDispatch<AppDispatch>();
-  const [disabled, setDisabled] = useState(false);
+  const [behavior, setBehavior] = useState<HaikuBehavior | null>(null);
+  const [done, setDone] = useState(1);
+
+  useLayoutEffect(() => {
+    const behavior = new HaikuBehavior(apolloClient, dispatch);
+    setBehavior(behavior);
+  }, []);
 
   return (
-    <div className={styles.content_card}>
-      <Link to={`/letter_detail/${props.id}`}>
-        <p className={`${styles.letterBody} m-b10`}>{props.text}</p>
-      </Link>
+    <div
+      className={styles.content_card}
+      style={{
+        opacity: done,
+      }}
+    >
+      <p className={`${styles.letterBody} m-b10`}>
+        <div>{props.text}</div>
+        <div
+          onClick={async () => {
+            setDone(0);
+            await new Promise(function (resolve) {
+              setTimeout(resolve, 500);
+            });
+            behavior?.doneHaiku({ haiku_id: props.id });
+          }}
+          className={`${styles.iconDone}`}
+        >
+          <i className={` i-mdi-check`} />
+        </div>
+      </p>
       <div className={styles.letterBodyBottom}>
         <div className={`flex-container`}>
           <button
             className={styles.like_button}
             onClick={() => {
-              if (disabled) return;
               try {
-                mutation({ variables: { id: parseInt(props.id.toString()) } });
+                mutation({
+                  variables: { id: parseInt(props.id.toString()) },
+                });
                 dispatch(likeHaiku(props.id));
-                setDisabled(true);
               } catch {}
             }}
           >
-            <i className="i-mdi-heart" />
+            <i className="i-mdi-priority-high" />
           </button>
           {props.likesCount}
         </div>
-        <div>
-          <Link to={`/poet_detail/${props.author?.id}`}>
-            {props.author?.name ?? "不明"} /{" "}
-          </Link>
-          {props.kigo.map((k) => k.name)}
-        </div>
+        <div>{props.kigo.map((k) => k.name)}</div>
       </div>
     </div>
   );

@@ -153,3 +153,7 @@ mutation LikeHaiku($id: Int) {
     likesCount
   }
 }
+
+mutation DoneHaiku($id: Int) {
+  doneHaiku(id: $id)
+}

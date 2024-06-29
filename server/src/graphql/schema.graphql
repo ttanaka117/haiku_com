@@ -70,8 +70,8 @@ type HaikuEdge {
 }
 
 type HaikuConnection {
-  edges: [HaikuEdge!]!
-  pageInfo: PageInfo!
+  edges: [HaikuEdge]
+  pageInfo: PageInfo
 }
 type Query {
   users: [User]
@@ -129,6 +129,7 @@ type Mutation {
     imageUrl: String
   ): Poet
   likeHaiku(id: Int): likeHaikuResponse
+  doneHaiku(id: Int): Boolean
   createSearchLetter(inputLetter: InputLetter): Boolean
 }
 

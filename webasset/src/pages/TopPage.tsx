@@ -7,14 +7,12 @@ import { SearchForm } from "../components/atoms/SearchForm";
 import Fab from "@mui/material/Fab";
 import Modal from "react-modal";
 import { PostLetterForm } from "../components/molecules/PostLetterForm";
-import { SearchHaikusDocument } from "../graphql/types";
-import { Haiku, toSeason } from "../model/haikus";
+import { Haiku } from "../model/haikus";
 import Pagination from "@mui/material/Pagination";
 import styles from "./TopPage.module.scss";
 import { HaikuBehavior } from "../behavior/haiks_behavior";
 import { SearchBehavior } from "../behavior/search_behavior";
 import { GlobalLoader } from "../components/molecules/GlobalLoader";
-import { swapHaikus } from "../slice/haikuSlice";
 
 type Response = {
   searchHaikus: Haiku[];
@@ -71,6 +69,10 @@ export function TopPage() {
     })();
   }, [onSubmit]);
 
+  useEffect(() => {
+    behavior?.sortHaikuByPriority();
+  }, [haikus]);
+
   return (
     <div>
       {isLoading && <GlobalLoader />}
@@ -85,6 +87,7 @@ export function TopPage() {
           {haikus.map((haiku) => {
             return (
               <LetterContentCard
+                key={haiku.id}
                 id={haiku.id}
                 text={haiku.text}
                 textKana={haiku.textKana}
@@ -94,13 +97,24 @@ export function TopPage() {
               />
             );
           })}
+          {
+            // <LetterContentCard
+            //   key={"last"}
+            //   id={"la"}
+            //   text={"haiku.text"}
+            //   textKana={"haiku.textKana"}
+            //   kigo={"haiku.kigo"}
+            //   likesCount={0}
+            //   author={".author"}
+            // />
+          }
         </ContentCardWrapper>
         <Fab
           style={{
             position: "fixed",
             bottom: 50,
             right: 280,
-            backgroundColor: "#a42b2b",
+            backgroundColor: "rgb(99, 99, 99)",
           }}
           size={"large"}
           color={"primary"}

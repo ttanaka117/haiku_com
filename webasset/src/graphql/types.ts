@@ -91,6 +91,7 @@ export type Mutation = {
   createHaiku?: Maybe<CreateHaikuResponse>;
   createPoet?: Maybe<Poet>;
   createSearchLetter?: Maybe<Scalars['Boolean']['output']>;
+  doneHaiku?: Maybe<Scalars['Boolean']['output']>;
   likeHaiku?: Maybe<LikeHaikuResponse>;
 };
 
@@ -111,6 +112,11 @@ export type MutationCreatePoetArgs = {
 
 export type MutationCreateSearchLetterArgs = {
   inputLetter?: InputMaybe<InputLetter>;
+};
+
+
+export type MutationDoneHaikuArgs = {
+  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -301,6 +307,13 @@ export type LikeHaikuMutationVariables = Exact<{
 
 
 export type LikeHaikuMutation = { __typename?: 'Mutation', likeHaiku?: { __typename?: 'likeHaikuResponse', likesCount?: number | null } | null };
+
+export type DoneHaikuMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type DoneHaikuMutation = { __typename?: 'Mutation', doneHaiku?: boolean | null };
 
 export const PoetContentsFragmentDoc = gql`
     fragment PoetContents on Poet {
@@ -780,3 +793,34 @@ export function useLikeHaikuMutation(baseOptions?: Apollo.MutationHookOptions<Li
 export type LikeHaikuMutationHookResult = ReturnType<typeof useLikeHaikuMutation>;
 export type LikeHaikuMutationResult = Apollo.MutationResult<LikeHaikuMutation>;
 export type LikeHaikuMutationOptions = Apollo.BaseMutationOptions<LikeHaikuMutation, LikeHaikuMutationVariables>;
+export const DoneHaikuDocument = gql`
+    mutation DoneHaiku($id: Int) {
+  doneHaiku(id: $id)
+}
+    `;
+export type DoneHaikuMutationFn = Apollo.MutationFunction<DoneHaikuMutation, DoneHaikuMutationVariables>;
+
+/**
+ * __useDoneHaikuMutation__
+ *
+ * To run a mutation, you first call `useDoneHaikuMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDoneHaikuMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [doneHaikuMutation, { data, loading, error }] = useDoneHaikuMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDoneHaikuMutation(baseOptions?: Apollo.MutationHookOptions<DoneHaikuMutation, DoneHaikuMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DoneHaikuMutation, DoneHaikuMutationVariables>(DoneHaikuDocument, options);
+      }
+export type DoneHaikuMutationHookResult = ReturnType<typeof useDoneHaikuMutation>;
+export type DoneHaikuMutationResult = Apollo.MutationResult<DoneHaikuMutation>;
+export type DoneHaikuMutationOptions = Apollo.BaseMutationOptions<DoneHaikuMutation, DoneHaikuMutationVariables>;

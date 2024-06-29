@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../assets/campers.png";
+import logo from "../../assets/taskflow.svg";
 import styles from "./Header.module.scss";
 import Modal from "react-modal";
 import { useState } from "react";
@@ -32,17 +32,19 @@ export function Header() {
       </Modal>
       <div className={styles.header_contents}>
         <Link className={styles.link_button} to={`/top`}>
-          <p className={`m-t10 ${styles.title}`}>俳句.com</p>
+          <p className={`m-t10 ${styles.title}`}>
+            <img src={logo} />
+          </p>
           {/* <p className={styles.sub_title}>campers</p> */}
         </Link>
         <div className={styles.menu_wrapper}>
-          <a onClick={() => setIsOpen(true)}>ログイン</a>
+          {/* <a onClick={() => setIsOpen(true)}>ログイン</a>
           <a
             onClick={() => setIsOpen(true)}
             className={styles.create_accout_button}
           >
             アカウント作成
-          </a>
+          </a> */}
         </div>
       </div>
     </header>

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Haikus } from "../model/haikus";
+import { Haiku, Haikus } from "../model/haikus";
 
 export interface HaikuState {
   value: Haikus;
@@ -23,6 +23,19 @@ export const haikuSlice = createSlice({
       if (action.payload.haikus === undefined) return;
       state.value.haikus = action.payload.haikus;
     },
+    addHaiku: (state, action: PayloadAction<Haiku>) => {
+      state.value.haikus = [...state.value.haikus, action.payload];
+    },
+    sortHaikuByPriority: (state, _: PayloadAction) => {
+      state.value.haikus = state.value.haikus.sort((a, b) => {
+        return b.likesCount - a.likesCount;
+      });
+    },
+    doneHaiku: (state, action: PayloadAction<number>) => {
+      state.value.haikus = state.value.haikus.filter((h) => {
+        return h.id !== action.payload;
+      });
+    },
     setAllHaikusCount: (state, action: PayloadAction<number>) => {
       state.allHaikusCount = action.payload;
     },
@@ -40,6 +53,13 @@ export const haikuSlice = createSlice({
   },
 });
 
-export const { swapHaikus, isLoading, setAllHaikusCount, likeHaiku } =
-  haikuSlice.actions;
+export const {
+  swapHaikus,
+  isLoading,
+  setAllHaikusCount,
+  likeHaiku,
+  doneHaiku,
+  addHaiku,
+  sortHaikuByPriority,
+} = haikuSlice.actions;
 export default haikuSlice.reducer;

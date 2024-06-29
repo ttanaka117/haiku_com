@@ -14,12 +14,14 @@ export class HaikuRepository {
   }
 
   async fetchHaikus() {
+    console.log("fetchHaikus");
     const result = await this.repository.find({
       relations: {
         author: true,
         kigo: true,
       },
     });
+    console.log(result);
     return result;
   }
 
@@ -46,7 +48,9 @@ export class HaikuRepository {
     limit: number;
     after: number;
   }) {
-    return await this.repository.find({
+    console.log("fetchHaikus");
+
+    const result = await this.repository.find({
       take: limit,
       where: {
         id: MoreThan(after),
@@ -56,5 +60,7 @@ export class HaikuRepository {
         kigo: true,
       },
     });
+    console.log(result);
+    return result;
   }
 }
