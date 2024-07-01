@@ -38,8 +38,11 @@ export function Header() {
           {/* <p className={styles.sub_title}>campers</p> */}
         </Link>
         <div className={styles.menu_wrapper}>
-          {/* <a onClick={() => setIsOpen(true)}>ログイン</a>
-          <a
+          <a onClick={() => setIsOpen(true)}>
+            <i className="i-mdi-undo" />
+            戻る
+          </a>
+          {/* <a
             onClick={() => setIsOpen(true)}
             className={styles.create_accout_button}
           >

@@ -3,12 +3,16 @@ import { Haiku, Haikus } from "../model/haikus";
 
 export interface HaikuState {
   value: Haikus;
+  backupHaikus: Haikus;
   allHaikusCount: number;
   loading: boolean;
   errorMessage: string | undefined;
 }
 const haikuState: HaikuState = {
   value: {
+    haikus: [],
+  },
+  backupHaikus: {
     haikus: [],
   },
   allHaikusCount: 0,
@@ -38,6 +42,12 @@ export const haikuSlice = createSlice({
         return h.id !== action.payload;
       });
     },
+    backupHaiku: (state, action: PayloadAction<Haiku>) => {
+      state.backupHaikus.haikus = [
+        ...state.backupHaikus.haikus,
+        action.payload,
+      ];
+    },
     setAllHaikusCount: (state, action: PayloadAction<number>) => {
       state.allHaikusCount = action.payload;
     },
@@ -61,6 +71,7 @@ export const {
   setAllHaikusCount,
   likeHaiku,
   doneHaiku,
+  backupHaiku,
   addHaiku,
   sortHaikuByPriority,
 } = haikuSlice.actions;

@@ -1,7 +1,7 @@
 import styles from "./LetterContentCard.module.scss";
 import { useLikeHaikuMutation } from "../../graphql/types";
-import { useDispatch } from "react-redux";
-import { AppDispatch, apolloClient } from "../..";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, apolloClient } from "../..";
 // import { likeLetter } from "../../slice/topPageSlice";
 import { useLayoutEffect, useState } from "react";
 import { Haiku } from "../../model/haikus";
@@ -13,7 +13,9 @@ export function LetterContentCard(props: Haiku) {
   const dispatch = useDispatch<AppDispatch>();
   const [behavior, setBehavior] = useState<HaikuBehavior | null>(null);
   const [done, setDone] = useState(1);
-
+  const haikus = useSelector(
+    (state: RootState) => state.haikuStore.value.haikus
+  );
   useLayoutEffect(() => {
     const behavior = new HaikuBehavior(apolloClient, dispatch);
     setBehavior(behavior);
@@ -34,7 +36,13 @@ export function LetterContentCard(props: Haiku) {
             await new Promise(function (resolve) {
               setTimeout(resolve, 500);
             });
-            behavior?.doneHaiku({ haiku_id: props.id });
+            await behavior?.doneHaiku({ haiku_id: props.id });
+            const haiku = haikus.find((h) => {
+              return h.id === props.id;
+            });
+            if (haiku) {
+              await behavior?.backupHaiku({ haiku: haiku });
+            }
           }}
           className={`${styles.iconDone}`}
         >

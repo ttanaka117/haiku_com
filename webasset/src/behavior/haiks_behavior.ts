@@ -18,6 +18,7 @@ import {
   doneHaiku,
   addHaiku,
   sortHaikuByPriority,
+  backupHaiku,
 } from "../slice/haikuSlice";
 
 export class HaikuBehavior {
@@ -73,13 +74,16 @@ export class HaikuBehavior {
 
   async doneHaiku({ haiku_id }: { haiku_id: number }) {
     this.dispatch(doneHaiku(haiku_id));
-    const result = await this.client.mutate({
+    await this.client.mutate({
       mutation: DoneHaikuDocument,
       variables: {
         id: haiku_id,
       },
     });
-    console.log(result);
+  }
+
+  async backupHaiku({ haiku }: { haiku: Haiku }) {
+    this.dispatch(backupHaiku(haiku));
   }
 
   async fetchHaikusWithPagination({ page }: { page: number }) {
