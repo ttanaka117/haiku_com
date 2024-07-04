@@ -2,10 +2,27 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/taskflow.svg";
 import styles from "./Header.module.scss";
 import Modal from "react-modal";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState, apolloClient } from "../..";
+import { HaikuBehavior } from "../../behavior/haiks_behavior";
+import { useSelector } from "react-redux";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const [behavior, setBehavior] = useState<HaikuBehavior | null>(null);
+
+  const haikus = useSelector(
+    (state: RootState) => state.haikuStore.backupHaikus.haikus
+  );
+  useLayoutEffect(() => {
+    const behavior = new HaikuBehavior(apolloClient, dispatch);
+    setBehavior(behavior);
+    if (behavior !== null) {
+      behavior.initializeHaikus();
+    }
+  }, []);
   return (
     <header className={styles.header}>
       <Modal
@@ -38,10 +55,17 @@ export function Header() {
           {/* <p className={styles.sub_title}>campers</p> */}
         </Link>
         <div className={styles.menu_wrapper}>
-          <a onClick={() => setIsOpen(true)}>
+          <button
+            onClick={() => {
+              if (haikus.length) {
+                behavior?.undoHaiku({ haiku: haikus[0] });
+              }
+              return;
+            }}
+          >
             <i className="i-mdi-undo" />
             戻る
-          </a>
+          </button>
           {/* <a
             onClick={() => setIsOpen(true)}
             className={styles.create_accout_button}

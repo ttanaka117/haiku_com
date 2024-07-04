@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Haiku, Haikus } from "../model/haikus";
+import { RootState } from "..";
 
 export interface HaikuState {
   value: Haikus;
@@ -48,6 +49,11 @@ export const haikuSlice = createSlice({
         action.payload,
       ];
     },
+    deleteBackup: (state, action: PayloadAction<Haiku>) => {
+      state.backupHaikus.haikus = state.backupHaikus.haikus.filter((it) => {
+        return it.id !== action.payload.id;
+      });
+    },
     setAllHaikusCount: (state, action: PayloadAction<number>) => {
       state.allHaikusCount = action.payload;
     },
@@ -73,6 +79,10 @@ export const {
   doneHaiku,
   backupHaiku,
   addHaiku,
+  deleteBackup,
   sortHaikuByPriority,
 } = haikuSlice.actions;
+
+export const selectBackup = (state: RootState) => state.haikuStore.backupHaikus;
+
 export default haikuSlice.reducer;

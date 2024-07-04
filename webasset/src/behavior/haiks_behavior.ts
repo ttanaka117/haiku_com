@@ -10,7 +10,7 @@ import {
   HaikusDocument,
 } from "../graphql/types";
 import { Haiku, HaikusEdges, toHaikuId } from "../model/haikus";
-import { AppDispatch } from "..";
+import { AppDispatch, RootState } from "..";
 import {
   swapHaikus,
   isLoading,
@@ -19,7 +19,10 @@ import {
   addHaiku,
   sortHaikuByPriority,
   backupHaiku,
+  selectBackup,
+  deleteBackup,
 } from "../slice/haikuSlice";
+import { useSelector } from "react-redux";
 
 export class HaikuBehavior {
   private client: ApolloClient<NormalizedCacheObject>;
@@ -86,6 +89,19 @@ export class HaikuBehavior {
     this.dispatch(backupHaiku(haiku));
   }
 
+  async undoHaiku({ haiku }: { haiku: Haiku }) {
+    await this.client.mutate({
+      mutation: CreateHaikuDocument,
+      variables: {
+        text: haiku.text,
+        description: haiku.text,
+      },
+    });
+
+    this.dispatch(addHaiku(haiku));
+    this.dispatch(deleteBackup(haiku));
+  }
+
   async fetchHaikusWithPagination({ page }: { page: number }) {
     const response = await this.client.query<HaikusEdges>({
       query: HaikusDocument,
@@ -113,8 +129,6 @@ export class HaikuBehavior {
         description: description,
       },
     });
-    console.log("add haiku result");
-    console.log(result);
     this.dispatch(
       addHaiku({
         id: toHaikuId(result.data.createHaiku.id),
