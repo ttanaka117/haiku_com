@@ -14,6 +14,7 @@ import topPageReducer from "./slice/topPageSlice";
 import haikuSlice from "./slice/haikuSlice";
 import { LetterDetailPage } from "./pages/LetterDetailPage";
 import { PoetDetailPage } from "./pages/PoetDetailPage";
+import { PrimeReactProvider } from "primereact/api";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <ApolloProvider client={apolloClient}>
-        <RouterProvider router={router} />
+        <PrimeReactProvider>
+          <RouterProvider router={router} />
+        </PrimeReactProvider>
       </ApolloProvider>
     </Provider>
   </React.StrictMode>

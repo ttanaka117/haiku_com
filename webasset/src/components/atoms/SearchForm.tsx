@@ -16,28 +16,6 @@ export function SearchForm(props: SearchFormProps) {
           onKeyDown={(e) => (e.code === "Enter" ? props.onSubmit() : null)}
           placeholder={"タスクを探す"}
         />
-        {/* <Select
-          styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              padding: "7px",
-              border: "none",
-              fontSize: "14px",
-            }),
-          }}
-          placeholder="作家名"
-          className={`${styles.form_input_select}`}
-          options={[
-            { value: undefined, label: "指定しない" },
-            { value: "種田山頭火", label: "種田山頭火" },
-            { value: "尾崎放哉", label: "尾崎放哉" },
-          ]}
-          onChange={(v) =>
-            v?.value != undefined
-              ? props.setState(v?.value.trimEnd())
-              : props.setState("")
-          }
-        /> */}
         <label
           className={styles.search_form_label}
           onClick={() => props.onSubmit()}

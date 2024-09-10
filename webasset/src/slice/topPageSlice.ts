@@ -19,10 +19,6 @@ export const topPageSlice = createSlice({
   name: "topPage",
   initialState: initialState,
   reducers: {
-    addLetter: (state, action: PayloadAction<Haiku>) => {
-      const haiku = action.payload;
-      state.value.haikus.push(haiku);
-    },
     isLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
@@ -38,5 +34,5 @@ export const topPageSlice = createSlice({
   },
 });
 
-export const { addLetter, isLoading } = topPageSlice.actions;
+export const { isLoading } = topPageSlice.actions;
 export default topPageSlice.reducer;

@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  transition: 0.2s;
 }
 
 a {
@@ -23,7 +24,7 @@ input {
 }
 
 .App-container {
-  max-width: 900px;
+  // max-width: 900px;
   margin: 0 auto;
 }
 

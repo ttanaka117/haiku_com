@@ -8,10 +8,13 @@
 
 .header {
   // background-color: #c4b9af;
-  padding: 16px 0;
+  padding: 10px 0 10px;
   // margin-bottom: 50px;
+  // margin-bottom: 20px;
   font-family: "noto sans";
   font-size: 15px;
+  border-bottom: 1px solid #ececec;
+  // @include box-shadow;
 }
 
 .header_contents {
@@ -19,7 +22,8 @@
   display: flex;
   justify-content: space-between;
   // border-bottom: 1px solid #c4b9af;
-  width: 900px;
+  // width: 900px;
+  padding: 0px 20px;
   margin: 0 auto;
 }
 
@@ -28,7 +32,7 @@
   font-size: 30px;
   margin: 0;
   > img {
-    width: 180px;
+    width: 150px;
   }
 }
 
@@ -39,20 +43,23 @@
   right: -60px;
   top: -10px;
   letter-spacing: 1.8px;
-  font-size: 14px;
+  font-size: 10px;
   display: inline-block;
 }
 
 .menu_wrapper {
   display: flex;
-  padding: 10px;
   align-items: center;
   gap: 20px;
 
-  > a {
-    color: #333333;
+  > button {
+    &:hover {
+      background-color: #ececec;
+    }
+    border-radius: 4px;
+    padding: 4px;
+    color: #585858;
     font-weight: bold;
-    padding: 14px;
     display: flex;
     gap: 5px;
   }
