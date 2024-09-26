@@ -91,3 +91,36 @@ export const searchHaikus = async ({
   return haikus;
 };
 ```
+
+# resolver
+graphqlのresolverです。
+controllerを呼び出します。
+その際には、repositoryのインスタンスを引数に渡します。
+
+repositoryのDIにはDIコンテナを利用しています。
+
+```typescript
+export const createResolvers = () => {
+  return {
+    Query: {
+      searchHaikus: async (
+        _: string,
+        input: { searchHaikusInput: SearchHaikusInput }
+      ) => {
+        return await searchHaikus({
+          searchRespository: container.get<SearchRespository>(
+            TYPES.SearchRespository
+          ),
+          haikuRepository: container.get<HaikuRepository>(
+            TYPES.HaikuRepository
+          ),
+          input: input.searchHaikusInput,
+        });
+      },
+    },
+    Mutation: {
+      // something mutation
+    },
+  };
+};
+```
