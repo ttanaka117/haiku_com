@@ -60,5 +60,34 @@ export class SearchRepository {
 
 # controller
 
-```
+ロジック部分に該当する層です。
+repositoryを引数として受け取り、トランザクションスクリプトとしてロジックを実装します。
+
+```typescript
+export const searchHaikus = async ({
+  searchRespository,
+  haikuRepository,
+  input,
+}: {
+  searchRespository: SearchRepository;
+  haikuRepository: HaikuRepository;
+  input: SearchHaikusInput;
+}) => {
+  const { body } = await searchRespository.search({
+    index: "haikus",
+    input: {
+      match: {
+        text: input.text,
+      },
+    },
+  });
+
+  const haikus = await haikuRepository.fetchHaikusByIds({
+    ids: body.hits.hits.map((h: Hit) => {
+      return Number(h._source.id);
+    }),
+  });
+
+  return haikus;
+};
 ```
