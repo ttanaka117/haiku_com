@@ -21,3 +21,44 @@ http://localhost:3000/graphql
 ```
 server/src/graphql/schema.graphql
 ```
+
+# 設計方針
+
+![image](https://github.com/user-attachments/assets/1b0e8020-1a67-4722-9fdf-baf705b51a86)
+
+# repository
+
+外部のmidlewareに依存する層です。
+例では、elastic searchを用いてインデックスの操作を行うためのrepositoryです。
+
+interfaceは定義していません。（依存性逆転の法則は利用していません。）
+・理由としては、ミドルウェアに依存するコストと運用コストの天秤をかけた際に運用コストが大きくなると考えたから
+・ユニットテストでは、パッチなどで十分にモック可能だと考えたから
+
+```typescript
+import { Client } from "@elastic/elasticsearch";
+
+export class SearchRepository {
+  private client: Client;
+
+  constructor({ client }: { client: Client }) {
+    this.client = client;
+  }
+
+  async search({ index, input }: { index: string; input: object }) {
+    return await this.client.search({
+      index: index,
+      body: {
+        query: {
+          ...input,
+        },
+      },
+    });
+  }
+}
+```
+
+# controller
+
+```
+```
