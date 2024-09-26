@@ -24,7 +24,7 @@ server/src/graphql/schema.graphql
 
 # 設計方針
 
-![image](https://github.com/user-attachments/assets/1b0e8020-1a67-4722-9fdf-baf705b51a86)
+![image](https://github.com/user-attachments/assets/ad5c0077-bd16-4a52-bd38-08e6794785e8)
 
 # repository
 
