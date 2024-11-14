@@ -3,6 +3,8 @@
 チケット管理アプリケーションです。
 モノレポで各機能を提供しています。
 
+<img width="1361" alt="image" src="https://github.com/user-attachments/assets/ba21ffce-006a-487d-bbec-db6d9b14da27">
+
 # リポジトリ
 
 各リポジトリの概要を記載します。
